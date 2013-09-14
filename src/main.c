@@ -6,6 +6,11 @@
 #include "timer.h"
 #include <util/delay.h>
 #include <avr/interrupt.h>
+#include <avr/wdt.h>
+
+
+#define SHOW_ERRORS
+
 
 #define IS_LOW_BEAM_ON (bit_is_clear(PINB, PB3))
 
@@ -16,26 +21,27 @@ static uint8_t clicks = 0;
 
 EEMEM uint8_t eeprom_pwm = 100;
 
+#ifdef SHOW_ERRORS
+   EEMEM uint8_t eeprom_error_count = 0;
+#endif
+
 #define PWM_INCREMENT_STEP    20
+#define ERROR_RESET_COUNT     0
+
 
 
 int main(void)
 {
-//   DDRB |= _BV(PB0);
-//   PORTB |= _BV(PB0);
-//
-//   if (MCUSR & _BV(BORF))
-//   {
-//      _delay_ms(1000);
-//   }
-//   else if (MCUSR & _BV(EXTRF))
-//   {
-//      //_delay_ms(2000);
-//   }
-//   else if (MCUSR & _BV(PORF))
-//   {
-//      _delay_ms(3000);
-//   }
+   wdt_enable(WDTO_2S);
+
+#ifdef SHOW_ERRORS
+   uint8_t errors = eeprom_read_byte(&eeprom_error_count);
+   if (bit_is_set(MCUSR, WDRF) || bit_is_set(MCUSR, EXTRF))
+   {
+      errors++;
+      eeprom_update_byte(&eeprom_error_count, errors);
+   }
+#endif
 
    init_timer();
 
@@ -49,6 +55,18 @@ int main(void)
    {
       low_beam_on = 1;
    }
+
+#ifdef SHOW_ERRORS
+   // indicate errors
+   for (uint8_t i = 0; i < errors; i++)
+   {
+      set_pwm(20);
+      sleep_ms(500);
+      set_pwm(0);
+      sleep_ms(500);
+      wdt_reset();
+   }
+#endif
 
 	while (1)
 	{
@@ -76,6 +94,12 @@ int main(void)
             }
             last_low_beam_off = get_ticks();
 
+#ifdef SHOW_ERRORS
+            if (clicks == 1)
+            {
+               eeprom_update_byte(&eeprom_error_count, 0);
+            }
+#endif
             if (clicks == 2)
             {
                if (0xFF - pwm < PWM_INCREMENT_STEP)
@@ -102,6 +126,7 @@ int main(void)
 	      }
 	   }
 	   sleep_ms(100);
+	   wdt_reset();
 	}
 
 
