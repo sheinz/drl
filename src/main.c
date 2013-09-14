@@ -1,10 +1,7 @@
 #include <inttypes.h>
 
-#ifdef __ECLIPSE_INDEXER_BUG__
-   #include <avr/iotn13.h>
-#else
-   #include <avr/io.h>
-#endif
+#include <avr/io.h>
+#include <avr/eeprom.h>
 
 #include "timer.h"
 #include <util/delay.h>
@@ -16,6 +13,10 @@ static uint8_t pwm;
 static uint32_t last_low_beam_off = 0;
 static uint8_t low_beam_on = 0;
 static uint8_t clicks = 0;
+
+EEMEM uint8_t eeprom_pwm = 100;
+
+#define PWM_INCREMENT_STEP    20
 
 
 int main(void)
@@ -38,7 +39,7 @@ int main(void)
 
    init_timer();
 
-   pwm = 80;
+   pwm = eeprom_read_byte(&eeprom_pwm);
 
    if (IS_LOW_BEAM_ON)     // to trigger first init
    {
@@ -77,7 +78,25 @@ int main(void)
 
             if (clicks == 2)
             {
-               pwm += 50;
+               if (0xFF - pwm < PWM_INCREMENT_STEP)
+               {
+                  pwm = 0;
+               }
+               else
+               {
+                  pwm += PWM_INCREMENT_STEP;
+               }
+            }
+            if (clicks == 3)
+            {
+               if (pwm >= PWM_INCREMENT_STEP)
+               {
+                  pwm -= (PWM_INCREMENT_STEP + PWM_INCREMENT_STEP);
+               }
+            }
+            if (clicks > 1)
+            {
+               eeprom_update_byte(&eeprom_pwm, pwm);
             }
 	         set_pwm(pwm);
 	      }
