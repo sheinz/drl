@@ -2701,7 +2701,7 @@ design rules under a new name.</description>
 <attribute name="MF" value="" x="5.715" y="12.7" size="1.778" layer="28" rot="MR270" display="off"/>
 <attribute name="OC_FARNELL" value="1097566" x="5.715" y="12.7" size="1.778" layer="28" rot="MR270" display="off"/>
 </element>
-<element name="R6" library="rcl" package="R0805" value="30k" x="19.685" y="10.16" rot="MR0"/>
+<element name="R6" library="rcl" package="R0805" value="22k" x="19.685" y="10.16" rot="MR0"/>
 <element name="R7" library="rcl" package="R0805" value="10k" x="22.5425" y="13.0175" rot="MR0"/>
 <element name="X1" library="con-wago-500" package="W237-102" value="CON1" x="24.765" y="5.08" rot="R180">
 <attribute name="OC_NEWARK" value="70K9898" x="24.765" y="5.08" size="1.778" layer="27" rot="R180" display="off"/>

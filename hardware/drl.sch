@@ -15623,7 +15623,7 @@ unfilled</description>
 <part name="C3" library="rcl" deviceset="CPOL-EU" device="E2,5-6E" value="100u"/>
 <part name="IC3" library="burr-brown" deviceset="REG1117" device=""/>
 <part name="GND5" library="supply1" deviceset="GND" device=""/>
-<part name="R6" library="rcl" deviceset="R-EU_" device="R0805" value="30k"/>
+<part name="R6" library="rcl" deviceset="R-EU_" device="R0805" value="22k"/>
 <part name="R7" library="rcl" deviceset="R-EU_" device="R0805" value="10k"/>
 <part name="GND6" library="supply1" deviceset="GND" device=""/>
 <part name="X1" library="con-wago-500" deviceset="W237-102" device="" value="CON1"/>
