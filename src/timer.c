@@ -19,6 +19,7 @@ ISR(TIM0_OVF_vect)
 void init_timer(void)
 {
    // Set OC0A pin to output
+   PORTB |= _BV(PB0);    // pull it high before switching to output
    DDRB |= _BV(PB0);
 
    // Clear OC0A on Compare Match, set OC0A at TOP (inverted mode)
