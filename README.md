@@ -23,3 +23,7 @@ It uses PWM to control lamp brightness.
 ![screenshot](https://raw.github.com/sheinz/drl/master/doc/drl_1.jpg)
 
 ![screenshot](https://raw.github.com/sheinz/drl/master/doc/drl_3.jpg)
+
+![screenshot](https://raw.github.com/sheinz/drl/master/doc/schematic.png)
+
+![screenshot](https://raw.github.com/sheinz/drl/master/doc/pcb.png)
