@@ -19,6 +19,33 @@ It uses PWM to control lamp brightness.
 - The error count is cleared after clicking a switch.
 
 
+**Build**
+
+In order to build the source code the following packages should be installed:
+
+    sudo apt-get install gcc-avr
+    sudo apt-get install avr-libc
+    sudo apt-get install cmake
+    
+If you encounter errors like these:
+    
+    ld: crttn13a.o: No such file: No such file or directory
+    undefined reference to `__eerd_byte_tn13a'
+    
+Copy libraries crttn13a.o and libc.a into tiny-stack subdirectory:
+
+    sudo cp /usr/lib/avr/lib/avr25/crttn13a.o /usr/lib/avr/lib/avr25/tiny-stack/
+    sudo cp /usr/lib/avr/lib/avr25/libc.a /usr/lib/avr/lib/avr25/tiny-stack/
+    
+To build and upload the firmware:
+    
+    mkdir drl-build
+    cd drl-build
+    cmake ../drl
+    make
+    make upload
+    
+
 --------------
 ![screenshot](https://raw.github.com/sheinz/drl/master/doc/drl_1.jpg)
 
